@@ -1,16 +1,27 @@
-import mysql.connector
+from sql_connection import get_sql_connection
 
-cnx = mysql.connector.connect(user='root', password='root',
-                              host='127.0.0.1',
-                              database='grocery')
+connection = get_sql_connection()
 
-cursor = cnx.cursor()
+def get_all_products():
+    cursor = connection.cursor()
 
-query = ("select product_id, `name`, products.uom_id ,price_per_unit,uom_name from products,uom where products.uom_id = uom.UOM_ID;")
+    query = ('''select product_id, `name`, products.uom_id ,price_per_unit,uom_name
+     from products,uom where products.uom_id = uom.UOM_ID;''')
 
-cursor.execute(query)
+    cursor.execute(query)
 
-for (product_id, name, uom_id, price_per_unit, uom_name) in cursor:
-    print(product_id, name, uom_id, price_per_unit, uom_name)
+    response = []
 
-cnx.close()
+    for (product_id, name, uom_id, price_per_unit, uom_name) in cursor:
+        response.append(
+            {
+                'product_id': product_id,
+                'name': name,
+                'uom_id': uom_id,
+                'price_per_unit': price_per_unit,
+                'uom_name': uom_name
+            }
+        )
+    return response
+
+print(get_all_products())
