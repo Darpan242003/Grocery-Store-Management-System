@@ -36,6 +36,15 @@ def insert_product(name, uom_id, price_per_unit):
 
     return cursor.lastrowid
 
+def remove_product(product_id):
+    cursor = connection.cursor()
+
+    query = ('''DELETE FROM products WHERE product_id = %s;''')
+    data = (product_id,)
+    cursor.execute(query, data)
+    connection.commit()
+
+    return 'Product Removed Successfully'
 
 
 
@@ -43,7 +52,9 @@ def insert_product(name, uom_id, price_per_unit):
 
 
 
-print(get_all_products())
-print(insert_product('Oil Bottle', 1, 70))
+
+# print(get_all_products())
+# print(insert_product('Oil Bottle', 1, 70))
+print(remove_product(5))
 
 connection.close()
