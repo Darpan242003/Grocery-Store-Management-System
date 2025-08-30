@@ -22,6 +22,28 @@ def get_all_products():
                 'uom_name': uom_name
             }
         )
+    cursor.close()
     return response
 
+def insert_product(name, uom_id, price_per_unit):
+    cursor = connection.cursor()
+
+    query = ('''INSERT INTO products (name, uom_id, price_per_unit)
+                VALUES (%s, %s, %s);''')
+    data = (name, uom_id, price_per_unit)
+    cursor.execute(query, data)
+    connection.commit()
+
+    return cursor.lastrowid
+
+
+
+
+
+
+
+
 print(get_all_products())
+print(insert_product('Oil Bottle', 1, 70))
+
+connection.close()
