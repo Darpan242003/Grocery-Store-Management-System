@@ -2,7 +2,7 @@ from sql_connection import get_sql_connection
 
 connection = get_sql_connection()
 
-def get_all_products():
+def get_all_products(connection):
     cursor = connection.cursor()
 
     query = ('''select product_id, `name`, products.uom_id ,price_per_unit,uom_name
